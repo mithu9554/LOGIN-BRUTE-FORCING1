@@ -53,7 +53,10 @@ contains special characters
 contains numbers
 So, we can remove any passwords that do not meet these conditions from our wordlist. Some tools would convert password policies to Hashcat or John rules, but hydra does not support rules for filtering passwords. So, we will simply use the following commands to do that for us:
 
+
 sed -ri '/^.{,7}$/d' william.txt            # remove shorter than 8
 sed -ri '/[!-/:-@\[-`\{-~]+/!d' william.txt # remove no special chars
 sed -ri '/[0-9]+/!d' william.txt            # remove no numbers
+
+
 We see that these commands shortened the wordlist from 43k passwords to around 13k passwords, around 70% shorter.
